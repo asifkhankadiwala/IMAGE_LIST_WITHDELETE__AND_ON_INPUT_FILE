@@ -1,0 +1,116 @@
+<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+<style type="text/css">
+	.img-wrap {
+	    position: relative;
+	    display: inline-block;
+	    font-size: 0;
+    }
+    .img-wrap .delete_image {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        z-index: 100;
+        background-color: #FFF;
+        padding: 5px 4px 4px;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        opacity: .7;
+        text-align: center;
+        font-size: 22px;
+        line-height: 10px;
+        border-radius: 50%;
+    }
+    .img-wrap:hover .delete_image {
+        opacity: 1;
+    }
+    .img-wrap img{
+		height: 150px;
+		width: 150px;
+    }
+  </style>
+ <br><br><br><H1>LIST IMAGES WITH DELETE BUTTON </H1><br><br>
+ <div>
+  <div class="img-wrap" id="img_111">
+    <span class="delete_image" data-id="111">&times;</span>
+    <img src="http://lorempixel.com/200/200" >
+  </div>
+    
+   <div class="img-wrap" id="img_112">
+    <span class="delete_image"  data-id="112">&times;</span>
+    <img src="http://lorempixel.com/100/80" >
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.delete_image').on('click', function() {
+       var imageid = $(this).data("id");
+        $('#img_'+imageid).remove();
+	  //  $.ajax({
+	  //     type: 'GET',
+	  //     url: "CHANGEYOURURLHERE/"+imageid,//Change your url
+	  //     dataType:'JSON',
+	  //     success: function (obj) {
+	  //         //console.log(obj);
+	  //         if (obj.success == '1') {
+	  //           $('#img_'+imageid).remove();
+	  //         }else{
+	  //             alert('Something Went Wrong');
+	  //         }
+	  //     }
+	  // });
+   });
+</script>
+
+
+
+<style type="text/css">
+	#imagesbulk li {  position: relative;
+	    display: inline-block;
+	    font-size: 0; padding-right: 10px }
+	#imagesbulk li img{ height: 150px;width: 150px }
+
+</style>
+<br><br><br><H1>LIST IMAGE WITH INPUT FILE </H1><br><br>
+<input id="gallery-photo-add" type="file" name="files[]" multiple name="">
+<br><br>
+<ul id="imagesbulk"></ul>
+
+
+<script type="text/javascript">
+	 $(function() {
+            // Multiple images preview in browser
+            var imagesPreview = function(input) {
+
+                if (input.files) {
+                    var filesAmount = input.files.length;
+
+                    for (i = 0; i < filesAmount; i++) {
+                        var ext = input.files[i].name.substring(input.files[i].name.lastIndexOf('.') + 1).toLowerCase();
+                        if (input.files[i].name  && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg"))
+                        {
+                            var reader = new FileReader();  
+                            reader.onload = function(event) {
+                                var mli = '<li><img src="'+event.target.result+'" style="width="50px"></li>';
+                                $('#imagesbulk').append(mli);
+                            }
+                            reader.readAsDataURL(input.files[i]);
+                        }
+                        else{
+                            $('#gallery-photo-add').val('');
+                            alert('please add only image files');
+                            return;
+                        }
+                    }
+                }
+
+            };
+            $('#gallery-photo-add').on('change', function() {
+               $('#imagesbulk').html('');
+               imagesPreview(this, 'div.gallery');
+           }); 
+
+           
+        });
+</script>
+
